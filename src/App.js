@@ -1,23 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import { num } from './Utils/number';
+import { useState, useRef } from 'react';
+import Box from './Components/Box';
 
 function App() {
+  const [send, setSend] = useState(null);
+  const [error, setError] = useState(false);
+  const elementRef = useRef();
+
+  const handleClick = () => {
+    if (+elementRef.current.value > 9) {
+      setError(true);
+      setSend(0);
+    } else {
+      setError(false);
+      setSend(+elementRef.current.value);
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <div className="wrapper">
+        <h1 className='title'>Hacker Earth Challenge</h1>
+        {error ? <p className='error'>Enter the value between 1 - 9</p>:<p> &nbsp;</p>}
+      </div>
+      <div className='input-wrapper'>
+        <p className='sub-title'>Enter the Value between 1 - 9</p>
+        <input className='input' ref={elementRef} />
+        <button className='btn' onClick={handleClick}>
+          Click Me
+        </button>
+      </div>
+      <div className='tab'>
+        {num.map((item, index) => {
+          return <Box item={item} val={send} className='box' key={index} />;
+        })}
+      </div>
     </div>
   );
 }
